@@ -14,7 +14,10 @@ def request_dimensions(ASIN, url= url):
         width = response['width']
         height = response['height']
         length = response['length']
-        data = {'height': height, 'width': width, 'length': length, 'weight': weight}
+        volume = (length * width * height) / 1728
+        volume = round(volume,3)
+        storage_fee = 0.64 * volume
+        data = {'height': height, 'width': width, 'length': length, 'weight': weight, 'volume': volume, 'storage_fee': storage_fee}
     except:
         data = {'height': 'error', 'width': 'error', 'length': 'error', 'weight': 'error'}
     return data
@@ -25,3 +28,5 @@ while True:
         exit()
     data = request_dimensions(entry)
     print('Weight : ' + str(data['weight']) + ' Pounds / ' + ("%.2f" % (data['weight'] / 16)) + ' Ounces,  Length: ' + str(data['length']) + ' in., Width: ' + str(data['width']) + ' in., Height: ' + str(data['height']) + ' in.')
+    print('Volume: ' + str(data['volume']) + ' Cubic Feet')
+    print('Storage Fee: $' + str(data['storage_fee']))
